@@ -5,12 +5,12 @@ import { ProductService } from './products.service';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
   @Post()
-  addProduct(
+  async addProduct(
     @Body('title') ProdTitle: string,
     @Body('desc') ProdDesc: string,
     @Body('price') ProdPrice: number,
   ) {
-    const generatedId = this.productService.insertProduct(
+    const generatedId = await this.productService.insertProduct(
       ProdTitle,
       ProdDesc,
       ProdPrice,
@@ -20,13 +20,15 @@ export class ProductController {
   }
 
   @Get()
-  getAllproducts() {
-    return this.productService.getProducts();
+  async getAllproducts() {
+    const products = this.productService.getProducts();
+
+    return products;
   }
 
   @Get(':id')
-  getProduct(@Param('id') id: string) {
-    return this.productService.getSingleProduct(id);
+  async getProduct(@Param('id') id: string) {
+    return await this.productService.getSingleProduct(id);
   }
 
   @Patch(':id')
